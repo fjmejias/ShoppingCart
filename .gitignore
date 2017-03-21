@@ -1,0 +1,11 @@
+*.dll
+ShoppingCart.WebUI/obj/*
+ShoppingCart.WebUI/bin/*
+*.pdb
+*.cache
+ShoppingCart.ServiceLibrary/obj/*
+ShoppingCart.ServiceLibrary/bin/*
+ShoppingCart.Libray/obj/*
+ShoppingCart.Libray/bin/*
+ShoppingCart.Infrastructure/obj/*
+ShoppingCart.Infrastructure/bin/*
