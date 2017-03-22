@@ -16,7 +16,7 @@ namespace ShoppingCart.Infrastructure.Repository
         public IList<Library.Model.Item> GetAllItems()
         {
             var items = from p in _dbContext.Items
-                select ModelMapper.Map(p);
+                        select ModelMapper.Map(p);
 
             return items.ToList();
         }
@@ -34,8 +34,8 @@ namespace ShoppingCart.Infrastructure.Repository
         public Library.Model.Basket GetBasket(int basketId)
         {
             var basket = from b in _dbContext.Baskets
-                where b.Id == basketId
-                select ModelMapper.Map(b);
+                         where b.Id == basketId
+                         select ModelMapper.Map(b);
 
             return basket.SingleOrDefault();
         }
@@ -44,8 +44,8 @@ namespace ShoppingCart.Infrastructure.Repository
         public Library.Model.Shopper GetShopper(string name)
         {
             var shopper = from s in _dbContext.Shoppers
-                         where s.Name == name
-                         select ModelMapper.Map(s);
+                          where s.Name == name
+                          select ModelMapper.Map(s);
 
             return shopper.SingleOrDefault();
         }
@@ -54,8 +54,8 @@ namespace ShoppingCart.Infrastructure.Repository
         public Library.Model.Basket GetLatestShopperBasket(int shopperId)
         {
             var basket = from b in _dbContext.Baskets
-                where b.ShopperId == shopperId && b.FinishDate == null && b.Cancelled == false
-                select ModelMapper.Map(b);
+                         where b.ShopperId == shopperId && b.FinishDate == null && b.Cancelled == false
+                         select ModelMapper.Map(b);
 
             return basket.OrderByDescending(b => b.CreationDate).FirstOrDefault();
         }
@@ -110,7 +110,7 @@ namespace ShoppingCart.Infrastructure.Repository
 
         public Library.Model.Basket GetNewBasket(int shopperId)
         {
-            var dbBasket = new Basket() {CreationDate = DateTime.Now, ShopperId = shopperId};
+            var dbBasket = new Basket() { CreationDate = DateTime.Now, ShopperId = shopperId };
 
             _dbContext.Baskets.Add(dbBasket);
 
@@ -122,44 +122,15 @@ namespace ShoppingCart.Infrastructure.Repository
 
         public Library.Model.Item UpdateItem(Library.Model.Item item)
         {
-            //var dbBasket = _dbContext.Baskets.FirstOrDefault(b => b.Id == basket.Id);
+            var dbItem = _dbContext.Items.FirstOrDefault(b => b.Id == item.Id);
 
-            //if (dbBasket != null)
-            //{
-            //    dbBasket.FinishDate = basket.FinishDate;
-            //    dbBasket.ShopperId = basket.ShopperId;
+            if (dbItem != null)
+            {
+                dbItem.Stock = item.Stock;
+                _dbContext.SaveChanges();
+            }
 
-            //    if (dbBasket.BasketItems == null) dbBasket.BasketItems = new List<BasketItem>();
-            //    foreach (var item in basket.Items)
-            //    {
-            //        var dbBasketItem = dbBasket.BasketItems.FirstOrDefault(bi => bi.Item.Id == item.Id);
-            //        if (dbBasketItem != null)
-            //        {
-            //            dbBasketItem.Quantity = item.Quantity ?? 1;
-            //        }
-            //        else
-            //        {
-            //            dbBasket.BasketItems.Add(new BasketItem()
-            //            {
-            //                Basket = dbBasket,
-            //                Item = new Item()
-            //                {
-            //                    Id = item.Id,
-            //                    Description = item.Description,
-            //                    Name = item.Name,
-            //                    Price = item.Price,
-            //                    Stock = item.Stock
-            //                },
-            //                Quantity = item.Quantity ?? 1
-            //            });
-            //        }
-            //    }
-
-            //    _dbContext.SaveChanges();
-            //}
-
-            //return ModelMapper.Map(dbBasket);
-            return null;
+            return ModelMapper.Map(dbItem);
         }
     }
 }
