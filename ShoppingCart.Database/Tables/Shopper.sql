@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Shopper]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Name] NCHAR(10) NULL
+)

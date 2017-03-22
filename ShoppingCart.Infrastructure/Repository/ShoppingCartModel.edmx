@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ShoppingCartModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Basket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" />
+          <Property Name="ShopperId" Type="int" />
+          <Property Name="Finished" Type="bit" />
+          <Property Name="FinishDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CartItems">
+          <Key>
+            <PropertyRef Name="BasketId" />
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="BasketId" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Shopper">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_BasketItems_ToBasket">
+          <End Role="Basket" Type="Self.Basket" Multiplicity="1" />
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Basket">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CartItems">
+              <PropertyRef Name="BasketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BasketItems_ToItem">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CartItems">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_ToShopper">
+          <End Role="Shopper" Type="Self.Shopper" Multiplicity="0..1" />
+          <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shopper">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Basket">
+              <PropertyRef Name="ShopperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShoppingCartModelStoreContainer">
+          <EntitySet Name="Basket" EntityType="Self.Basket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CartItems" EntityType="Self.CartItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shopper" EntityType="Self.Shopper" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BasketItems_ToBasket" Association="Self.FK_BasketItems_ToBasket">
+            <End Role="Basket" EntitySet="Basket" />
+            <End Role="CartItems" EntitySet="CartItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BasketItems_ToItem" Association="Self.FK_BasketItems_ToItem">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="CartItems" EntitySet="CartItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_ToShopper" Association="Self.FK_Cart_ToShopper">
+            <End Role="Shopper" EntitySet="Shopper" />
+            <End Role="Basket" EntitySet="Basket" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShoppingCartModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Baskets" Relationship="ShoppingCartModel.CartItems" FromRole="Item" ToRole="Basket" />
+        </EntityType>
+        <EntityContainer Name="ShoppingCartEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="Baskets" EntityType="ShoppingCartModel.Basket" />
+          <EntitySet Name="Shoppers" EntityType="ShoppingCartModel.Shopper" />
+          <AssociationSet Name="FK_Cart_ToShopper" Association="ShoppingCartModel.FK_Cart_ToShopper">
+            <End Role="Shopper" EntitySet="Shoppers" />
+            <End Role="Basket" EntitySet="Baskets" />
+          </AssociationSet>
+          <AssociationSet Name="CartItems" Association="ShoppingCartModel.CartItems">
+            <End Role="Basket" EntitySet="Baskets" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Basket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="DateTime" Precision="3" />
+          <Property Name="ShopperId" Type="Int32" />
+          <Property Name="Finished" Type="Boolean" />
+          <Property Name="FinishDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Shopper" Relationship="ShoppingCartModel.FK_Cart_ToShopper" FromRole="Basket" ToRole="Shopper" />
+          <NavigationProperty Name="Items" Relationship="ShoppingCartModel.CartItems" FromRole="Basket" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Shopper">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Baskets" Relationship="ShoppingCartModel.FK_Cart_ToShopper" FromRole="Shopper" ToRole="Basket" />
+        </EntityType>
+        <Association Name="FK_Cart_ToShopper">
+          <End Type="ShoppingCartModel.Shopper" Role="Shopper" Multiplicity="0..1" />
+          <End Type="ShoppingCartModel.Basket" Role="Basket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shopper">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Basket">
+              <PropertyRef Name="ShopperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CartItems">
+          <End Type="ShoppingCartModel.Basket" Role="Basket" Multiplicity="*" />
+          <End Type="ShoppingCartModel.Item" Role="Item" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ShoppingCartModelStoreContainer" CdmEntityContainer="ShoppingCartEntities">
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="ShoppingCartModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Baskets">
+            <EntityTypeMapping TypeName="ShoppingCartModel.Basket">
+              <MappingFragment StoreEntitySet="Basket">
+                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="ShopperId" ColumnName="ShopperId" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shoppers">
+            <EntityTypeMapping TypeName="ShoppingCartModel.Shopper">
+              <MappingFragment StoreEntitySet="Shopper">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CartItems" TypeName="ShoppingCartModel.CartItems" StoreEntitySet="CartItems">
+            <EndProperty Name="Item">
+              <ScalarProperty Name="Id" ColumnName="ItemId" />
+            </EndProperty>
+            <EndProperty Name="Basket">
+              <ScalarProperty Name="Id" ColumnName="BasketId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

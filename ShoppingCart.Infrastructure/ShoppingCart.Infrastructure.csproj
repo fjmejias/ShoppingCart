@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,8 +51,67 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ModelMapper.cs" />
+    <Compile Include="Repository\Basket.cs">
+      <DependentUpon>ShoppingCartModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ShoppingCartDbContext.cs" />
+    <Compile Include="Repository\IShoppingCartDbContext.cs" />
+    <Compile Include="Repository\Item.cs">
+      <DependentUpon>ShoppingCartModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\Shopper.cs">
+      <DependentUpon>ShoppingCartModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ShoppingCartModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShoppingCartModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ShoppingCartModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShoppingCartModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ShoppingCartModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShoppingCartModel.edmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="Repository\ShoppingCartModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ShoppingCartModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Repository\ShoppingCartModel.edmx.diagram">
+      <DependentUpon>ShoppingCartModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShoppingCart.Library\ShoppingCart.Library.csproj">
+      <Project>{0c5eac9f-ec1e-463b-90fa-83d74a65d04a}</Project>
+      <Name>ShoppingCart.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Repository\ShoppingCartModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ShoppingCartModel.edmx</DependentUpon>
+      <LastGenOutput>ShoppingCartModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Repository\ShoppingCartModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ShoppingCartModel.edmx</DependentUpon>
+      <LastGenOutput>ShoppingCartModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
