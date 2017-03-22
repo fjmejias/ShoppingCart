@@ -5,7 +5,11 @@ ShoppingCart.WebUI/bin/*
 *.cache
 ShoppingCart.ServiceLibrary/obj/*
 ShoppingCart.ServiceLibrary/bin/*
-ShoppingCart.Libray/obj/*
-ShoppingCart.Libray/bin/*
+ShoppingCart.ServiceLibrary.UnitTest/obj/*
+ShoppingCart.ServiceLibrary.UnitTest/bin/*
+ShoppingCart.Library/obj/*
+ShoppingCart.Library/bin/*
 ShoppingCart.Infrastructure/obj/*
 ShoppingCart.Infrastructure/bin/*
+ShoppingCart.Database/obj/*
+ShoppingCart.Database/bin/*
