@@ -77,7 +77,6 @@ namespace ShoppingCart.ServiceLibrary
 
                     if (item.Stock > 0)
                     {
-                        item.Stock = item.Stock - 1;
                         item.Quantity = item.Quantity == null ? 1 : item.Quantity++;
                         basket = ShoppingCartDomain.AddItem(basket, item);
                     }
@@ -133,17 +132,18 @@ namespace ShoppingCart.ServiceLibrary
 
                     foreach (var itemToAdd in itemsToAdd)
                     {
-                        var item = ShoppingCartDomain.GetItem(itemToAdd.Key);
+                        Item item = basket.Items != null
+                            ? basket.Items.FirstOrDefault(i => i.Id == itemToAdd.Key)
+                            : null;
 
-                        if (item.Stock > 0)
+                        if (item == null) item = ShoppingCartDomain.GetItem(itemToAdd.Key);
+                        
+                        if (item != null && item.Stock > 0)
                         {
-                            item.Quantity = item.Stock > itemToAdd.Value ? itemToAdd.Value : item.Stock;
-                            item.Stock = item.Stock > itemToAdd.Value ? item.Stock - itemToAdd.Value : 0;
+                            var newQuantity = (item.Quantity ?? 0) + itemToAdd.Value;
+                            item.Quantity = item.Stock > newQuantity ? newQuantity : item.Stock;
+                            //item.Stock = item.Stock > itemToAdd.Value ? item.Stock - itemToAdd.Value : 0;
                             basket = ShoppingCartDomain.AddItem(basket, item);
-                        }
-                        else
-                        {
-                            throw new Exception(string.Format("The item {0} has no stock.", itemToAdd));
                         }
                     }
                 }

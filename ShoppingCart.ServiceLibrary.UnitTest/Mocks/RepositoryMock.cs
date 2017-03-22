@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ShoppingCart.Library.Model;
 using ShoppingCart.Library.RepositoryContract;
 
@@ -12,7 +10,9 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
 {
     public class RepositoryMock : IRepository
     {
-        public IList<Library.Model.Item> GetAllItems()
+        private static Basket _basket;
+
+        public IList<Item> GetAllItems()
         {
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Mocks\example_data.csv");
             string[] allLines = File.ReadAllLines(path);
@@ -32,12 +32,12 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
             return query.ToList();
         }
 
-        public IList<Library.Model.Item> GetBasketItems(int basketId)
+        public IList<Item> GetBasketItems(int basketId)
         {
             throw new NotImplementedException();
         }
 
-        public Library.Model.Basket GetBasket(int basketId)
+        public Basket GetBasket(int basketId)
         {
             throw new NotImplementedException();
         }
@@ -54,14 +54,17 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
 
         public Basket GetLatestShopperBasket(int shopperId)
         {
-            return new Basket()
-            {
-                CreationDate = DateTime.Today,
-                Id = 1,
-                ShopperId = shopperId,
-                Finished = false,
-                Items = new List<Item>()
-            };
+            if (_basket == null)
+                return new Basket()
+                {
+                    CreationDate = DateTime.Today,
+                    Id = 1,
+                    ShopperId = shopperId,
+                    Finished = false,
+                    Items = new List<Item>()
+                };
+            
+            return _basket;
         }
 
 
@@ -84,6 +87,11 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
                 ShopperId = shopperId,
                 Finished = false
             };
+        }
+
+        public static void SetMockBasket(Basket basket)
+        {
+            _basket = basket;
         }
         
     }
