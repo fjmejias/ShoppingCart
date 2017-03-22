@@ -133,7 +133,8 @@ namespace ShoppingCart.ServiceLibrary.UnitTest
         private void PrintBasket(string shopperName, Basket basket)
         {
             Console.WriteLine("Basket of user: {0}", shopperName);
-            Console.WriteLine("Items in the basket: {0}", basket.Items.Count);
+            Console.WriteLine("Different Items in the basket: {0}, Total Items in the basket: {1}", basket.Items.Count,
+                basket.Items.Sum(i => i.Quantity));
             foreach (var basketItem in basket.Items)
             {
                 Console.WriteLine("Name: {0}\t Description: {1}\t Id: {2}\t Quantity: {3}\t Stock: {4}", basketItem.Name, basketItem.Description, basketItem.Id, basketItem.Quantity, basketItem.Stock);
