@@ -63,20 +63,32 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
             {
                 CreationDate = DateTime.Today,
                 Id = 1,
-                ShopperId = 1,
-                Finished = false
+                ShopperId = shopperId,
+                Finished = false,
+                Items = new List<Item>()
             };
         }
 
 
         public Item GetItem(int id)
         {
-            throw new NotImplementedException();
+            return GetAllItems().SingleOrDefault(i => i.Id == id);
         }
 
-        public void UpdateBasket(Basket basket)
+        public Basket UpdateBasket(Basket basket)
         {
-            throw new NotImplementedException();
+            return basket;
+        }
+
+        public Basket GetNewBasket(int shopperId)
+        {
+            return new Basket()
+            {
+                CreationDate = DateTime.Today,
+                Id = 2,
+                ShopperId = shopperId,
+                Finished = false
+            };
         }
     }
 }

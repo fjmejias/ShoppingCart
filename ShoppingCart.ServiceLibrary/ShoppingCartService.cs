@@ -77,5 +77,27 @@ namespace ShoppingCart.ServiceLibrary
 
             return basket;
         }
+
+        public Basket GetLatestBasket(string shopperName)
+        {
+            Basket basket = null;
+
+            try
+            {
+                var shopper = ShoppingCartDomain.GetShopper(shopperName);
+
+                if (shopper != null)
+                {
+                    basket = ShoppingCartDomain.GetLatestShopperBasketOrNew(shopper);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetLatestBasket : " + ex.InnerException);
+                throw ex;
+            }
+
+            return basket;
+        }
     }
 }

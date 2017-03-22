@@ -10,23 +10,14 @@ namespace ShoppingCart.Library.RepositoryContract
     public interface IRepository
     {
         IList<Item> GetAllItems();
-
         IList<Item> GetBasketItems(int basketId);
-
         void AddItem(int basketId, int itemId);
-
         Basket GetBasket(int basketId);
-
         int CheckOutBasket(int basketId);
-
         Shopper GetShopper(string name);
-
         Basket GetLatestShopperBasket(int shopperId);
-
         Item GetItem(int id);
-
-        void UpdateBasket(Basket basket);
-
+        Basket UpdateBasket(Basket basket);
         Basket GetNewBasket(int shopperId);
     }
 }

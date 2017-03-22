@@ -54,7 +54,16 @@ namespace ShoppingCart.Library
 
         public Basket AddItem(Basket basket, Item item)
         {
-            throw new NotImplementedException();
+            if (basket.Items == null)
+            {
+                basket.Items = new List<Item> {item};
+            }
+            else if (basket.Items.All(i => i.Id != item.Id))
+            {
+                basket.Items.Add(item);
+            }
+
+            return Repository.UpdateBasket(basket);
         }
 
         public void UpdateBasket(Basket basket)

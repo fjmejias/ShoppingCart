@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
 using ShoppingCart.Infrastructure.Repository;
@@ -48,13 +49,26 @@ namespace ShoppingCart.ServiceLibrary.UnitTest
             string shopperName = "Mika";
             int itemToAdd = 2;
 
-            var basket = service.AddItemToBasket(shopperName, itemToAdd);
+            var basket = service.GetLatestBasket(shopperName);
 
-            
+            Assert.IsFalse(basket.Items.Any(i => i.Id == itemToAdd));
 
+            Console.WriteLine("Before adding an item");
+            Console.WriteLine($"Basket of user: {shopperName}");
+            Console.WriteLine($"Items in the basket: {basket.Items.Count}");
 
-           
+            basket = service.AddItemToBasket(shopperName, itemToAdd);
 
+            Assert.IsTrue(basket.Items.Any(i => i.Id == itemToAdd));
+
+            Console.WriteLine("After adding an item");
+            Console.WriteLine($"Basket of user: {shopperName}");
+            Console.WriteLine($"Items in the basket: {basket.Items.Count}");
+            foreach (var item in basket.Items)
+            {
+                Console.WriteLine(string.Format("Name: {0}, Description: {1}, Id: {2}, Quantity: {3}", item.Name,
+                    item.Description, item.Id, item.Stock));
+            }
         }
     }
 }

@@ -16,14 +16,7 @@ namespace ShoppingCart.Infrastructure.Repository
         public IList<Library.Model.Item> GetAllItems()
         {
             var items = from p in _dbContext.Items
-                        select new Library.Model.Item()
-                {
-                    Id = p.Id,
-                    Description = p.Description,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Stock = p.Stock
-                };
+                select ModelMapper.Map(p);
 
             return items.ToList();
         }
@@ -33,14 +26,7 @@ namespace ShoppingCart.Infrastructure.Repository
             var items =
                 _dbContext.Baskets.Where(b => b.Id == basketId)
                     .SelectMany(b => b.Items)
-                    .Select(p => new Library.Model.Item()
-                    {
-                        Id = p.Id,
-                        Description = p.Description,
-                        Name = p.Name,
-                        Price = p.Price,
-                        Stock = p.Stock
-                    });
+                    .Select(p => ModelMapper.Map(p));
 
             return items.ToList();
         }
@@ -60,14 +46,7 @@ namespace ShoppingCart.Infrastructure.Repository
         {
             var basket = from b in _dbContext.Baskets
                 where b.Id == basketId
-                         select new Library.Model.Basket()
-                {
-                    Id = b.Id,
-                    CreationDate = b.CreationDate,
-                    FinishDate = b.FinishDate,
-                    Finished = b.Finished,
-                    ShopperId = b.ShopperId
-                };
+                select ModelMapper.Map(b);
 
             return basket.SingleOrDefault();
         }
@@ -82,11 +61,7 @@ namespace ShoppingCart.Infrastructure.Repository
         {
             var shopper = from s in _dbContext.Shoppers
                          where s.Name == name
-                         select new Library.Model.Shopper()
-                         {
-                             Id = s.Id,
-                             Name = s.Name
-                         };
+                         select ModelMapper.Map(s);
 
             return shopper.SingleOrDefault();
         }
@@ -96,14 +71,7 @@ namespace ShoppingCart.Infrastructure.Repository
         {
             var basket = from b in _dbContext.Baskets
                 where b.ShopperId == shopperId
-                select new Library.Model.Basket()
-                {
-                    CreationDate = b.CreationDate,
-                    FinishDate = b.FinishDate,
-                    Id = b.Id,
-                    Finished = b.Finished,
-                    ShopperId = shopperId
-                };
+                select ModelMapper.Map(b);
 
             return basket.OrderByDescending(b => b.CreationDate).FirstOrDefault();
         }
@@ -111,17 +79,10 @@ namespace ShoppingCart.Infrastructure.Repository
 
         public Library.Model.Item GetItem(int id)
         {
-            return _dbContext.Items.Where(i => i.Id == id).Select(i => new Library.Model.Item()
-            {
-                Id = i.Id,
-                Name = i.Name,
-                Price = i.Price,
-                Description = i.Description,
-                Stock = i.Stock
-            }).FirstOrDefault();
+            return _dbContext.Items.Where(i => i.Id == id).Select(i => ModelMapper.Map(i)).FirstOrDefault();
         }
 
-        public void UpdateBasket(Library.Model.Basket basket)
+        public Library.Model.Basket UpdateBasket(Library.Model.Basket basket)
         {
             var dbBasket = _dbContext.Baskets.FirstOrDefault(b => b.Id == basket.Id);
 
@@ -146,6 +107,8 @@ namespace ShoppingCart.Infrastructure.Repository
 
                 _dbContext.SaveChanges();
             }
+
+            return ModelMapper.Map(dbBasket);
         }
 
 
@@ -157,7 +120,7 @@ namespace ShoppingCart.Infrastructure.Repository
 
             _dbContext.SaveChanges();
 
-            return 
+            return ModelMapper.Map(dbBasket);
         }
     }
 }
