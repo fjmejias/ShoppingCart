@@ -22,9 +22,9 @@ namespace ShoppingCart.Infrastructure
         {
             List<Library.Model.Item> items = null;
 
-            if (dbBasket.Items != null)
+            if (dbBasket.BasketItems != null)
             {
-                items = dbBasket.Items.Select(Map).ToList();
+                items = dbBasket.BasketItems.Select(bi => Map(bi.Item)).ToList();
             }
 
             return new Library.Model.Basket()

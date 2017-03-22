@@ -17,7 +17,7 @@ namespace ShoppingCart.Infrastructure.Repository
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Item()
         {
-            this.Baskets = new HashSet<Basket>();
+            this.BasketItems = new HashSet<BasketItem>();
         }
     
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace ShoppingCart.Infrastructure.Repository
         public Nullable<decimal> Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Basket> Baskets { get; set; }
+        public virtual ICollection<BasketItem> BasketItems { get; set; }
     }
 }

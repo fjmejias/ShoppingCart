@@ -25,21 +25,10 @@ namespace ShoppingCart.Infrastructure.Repository
         {
             var items =
                 _dbContext.Baskets.Where(b => b.Id == basketId)
-                    .SelectMany(b => b.Items)
-                    .Select(p => ModelMapper.Map(p));
+                    .SelectMany(b => b.BasketItems)
+                    .Select(p => ModelMapper.Map(p.Item));
 
             return items.ToList();
-        }
-
-        public void AddItem(int basketId, int itemId)
-        {
-            var basket = _dbContext.Baskets.SingleOrDefault(b => b.Id == basketId);
-            var item = _dbContext.Items.SingleOrDefault(p => p.Id == itemId);
-
-            if (basket != null && item != null) 
-                basket.Items.Add(item);
-
-            _dbContext.SaveChanges();
         }
 
         public Library.Model.Basket GetBasket(int basketId)
@@ -92,16 +81,21 @@ namespace ShoppingCart.Infrastructure.Repository
                 dbBasket.Finished = basket.Finished;
                 dbBasket.ShopperId = basket.ShopperId;
 
-                if (dbBasket.Items == null) dbBasket.Items = new List<Item>();
+                if (dbBasket.BasketItems == null) dbBasket.BasketItems = new List<BasketItem>();
                 foreach (var item in basket.Items)
                 {
-                    dbBasket.Items.Add(new Item()
+                    dbBasket.BasketItems.Add(new BasketItem()
                     {
-                        Id = item.Id,
-                        Description = item.Description,
-                        Name = item.Name,
-                        Price = item.Price,
-                        Stock = item.Stock
+                        Basket = dbBasket,
+                        Item = new Item()
+                        {
+                            Id = item.Id,
+                            Description = item.Description,
+                            Name = item.Name,
+                            Price = item.Price,
+                            Stock = item.Stock
+                        },
+                        Quantity = item.Quantity ?? 1
                     });
                 }
 

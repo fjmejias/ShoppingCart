@@ -25,8 +25,9 @@ namespace ShoppingCart.Infrastructure.Repository
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Basket> Baskets { get; set; }
+        public virtual DbSet<BasketItem> BasketItems { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Shopper> Shoppers { get; set; }
     }
 }

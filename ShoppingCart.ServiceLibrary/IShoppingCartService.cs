@@ -11,7 +11,9 @@ namespace ShoppingCart.ServiceLibrary
     public interface IShoppingCartService
     {
         IList<Item> GetAllItems();
+        Item GetItem(int itemToAdd);
         Basket AddItemToBasket(string shopperName, int itemToAdd);
         Basket GetLatestBasket(string shopperName);
+        Basket AddItemsToBasket(string shopperName, Dictionary<int, int> itemsToAdd);
     }
 }

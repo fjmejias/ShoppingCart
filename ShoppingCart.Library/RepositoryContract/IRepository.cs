@@ -11,7 +11,6 @@ namespace ShoppingCart.Library.RepositoryContract
     {
         IList<Item> GetAllItems();
         IList<Item> GetBasketItems(int basketId);
-        void AddItem(int basketId, int itemId);
         Basket GetBasket(int basketId);
         int CheckOutBasket(int basketId);
         Shopper GetShopper(string name);

@@ -37,11 +37,6 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
             throw new NotImplementedException();
         }
 
-        public void AddItem(int basketId, int itemId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Library.Model.Basket GetBasket(int basketId)
         {
             throw new NotImplementedException();
@@ -90,5 +85,6 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
                 Finished = false
             };
         }
+        
     }
 }

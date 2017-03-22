@@ -28,7 +28,7 @@ namespace ShoppingCart.ServiceLibrary
         }
 
 
-        public IList<Library.Model.Item> GetAllItems()
+        public IList<Item> GetAllItems()
         {
             IList<Item> listItems = null;
 
@@ -43,6 +43,23 @@ namespace ShoppingCart.ServiceLibrary
             }
 
             return listItems;
+        }
+
+        public Item GetItem(int itemToAdd)
+        {
+            Item item = null;
+
+            try
+            {
+                item = ShoppingCartDomain.GetItem(itemToAdd);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetItem : " + ex.InnerException);
+                throw ex;
+            }
+
+            return item;
         }
 
         public Basket AddItemToBasket(string shopperName, int itemToAdd)
@@ -61,6 +78,7 @@ namespace ShoppingCart.ServiceLibrary
                     if (item.Stock > 0)
                     {
                         item.Stock = item.Stock - 1;
+                        item.Quantity = item.Quantity == null ? 1 : item.Quantity++;
                         basket = ShoppingCartDomain.AddItem(basket, item);
                     }
                     else
@@ -99,5 +117,45 @@ namespace ShoppingCart.ServiceLibrary
 
             return basket;
         }
+
+
+        public Basket AddItemsToBasket(string shopperName, Dictionary<int, int> itemsToAdd)
+        {
+            Basket basket = null;
+
+            try
+            {
+                var shopper = ShoppingCartDomain.GetShopper(shopperName);
+
+                if (shopper != null)
+                {
+                    basket = ShoppingCartDomain.GetLatestShopperBasketOrNew(shopper);
+
+                    foreach (var itemToAdd in itemsToAdd)
+                    {
+                        var item = ShoppingCartDomain.GetItem(itemToAdd.Key);
+
+                        if (item.Stock > 0)
+                        {
+                            item.Quantity = item.Stock > itemToAdd.Value ? itemToAdd.Value : item.Stock;
+                            item.Stock = item.Stock > itemToAdd.Value ? item.Stock - itemToAdd.Value : 0;
+                            basket = ShoppingCartDomain.AddItem(basket, item);
+                        }
+                        else
+                        {
+                            throw new Exception(string.Format("The item {0} has no stock.", itemToAdd));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("AddItemsToBasket : " + ex.InnerException);
+                throw ex;
+            }
+
+            return basket;
+        }
+
     }
 }

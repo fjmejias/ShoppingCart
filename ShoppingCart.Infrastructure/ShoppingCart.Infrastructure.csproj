@@ -55,6 +55,9 @@
     <Compile Include="Repository\Basket.cs">
       <DependentUpon>ShoppingCartModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repository\BasketItem.cs">
+      <DependentUpon>ShoppingCartModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repository\Item.cs">
       <DependentUpon>ShoppingCartModel.tt</DependentUpon>
     </Compile>
