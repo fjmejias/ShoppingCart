@@ -13,3 +13,4 @@ ShoppingCart.Infrastructure/obj/*
 ShoppingCart.Infrastructure/bin/*
 ShoppingCart.Database/obj/*
 ShoppingCart.Database/bin/*
+TestResults/*

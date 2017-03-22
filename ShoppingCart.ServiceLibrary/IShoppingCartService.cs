@@ -15,5 +15,6 @@ namespace ShoppingCart.ServiceLibrary
         Basket AddItemToBasket(string shopperName, int itemToAdd);
         Basket GetLatestBasket(string shopperName);
         Basket AddItemsToBasket(string shopperName, Dictionary<int, int> itemsToAdd);
+        IList<Item> CheckOutBasket(Basket basket);
     }
 }

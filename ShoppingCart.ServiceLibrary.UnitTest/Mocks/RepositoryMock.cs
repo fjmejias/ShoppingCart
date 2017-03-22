@@ -12,9 +12,14 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
     {
         private static Basket _basket;
 
+        public static void SetMockBasket(Basket basket)
+        {
+            _basket = basket;
+        }
+
         public IList<Item> GetAllItems()
         {
-            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Mocks\example_data.csv");
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\..\ShoppingCart.ServiceLibrary.UnitTest\Mocks\example_data.csv");
             string[] allLines = File.ReadAllLines(path);
 
             var query = from line in allLines
@@ -60,7 +65,6 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
                     CreationDate = DateTime.Today,
                     Id = 1,
                     ShopperId = shopperId,
-                    Finished = false,
                     Items = new List<Item>()
                 };
             
@@ -84,14 +88,13 @@ namespace ShoppingCart.ServiceLibrary.UnitTest.Mocks
             {
                 CreationDate = DateTime.Today,
                 Id = 2,
-                ShopperId = shopperId,
-                Finished = false
+                ShopperId = shopperId
             };
         }
 
-        public static void SetMockBasket(Basket basket)
+        public Item UpdateItem(Item item)
         {
-            _basket = basket;
+            return item;
         }
         
     }

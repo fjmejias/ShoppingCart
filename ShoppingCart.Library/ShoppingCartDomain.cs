@@ -52,8 +52,25 @@ namespace ShoppingCart.Library
             return basket;
         }
 
-        public Basket AddItem(Basket basket, Item item)
+        public Basket AddItem(Basket basket, Item item, int quantity)
         {
+            //if (item != null && item.Stock > 0)
+            //{
+            //    var newQuantity = (item.Quantity ?? 0) + quantity;
+            //    item.Quantity = item.Stock > newQuantity ? newQuantity : item.Stock;
+            //    //item.Stock = item.Stock > itemToAdd.Value ? item.Stock - itemToAdd.Value : 0;
+            //}
+
+            if (item.Stock > 0)
+            {
+                var newQuantity = (item.Quantity ?? 0) + quantity;
+                item.Quantity = item.Stock > newQuantity ? newQuantity : item.Stock;
+            }
+            else
+            {
+                _logger.Warn(string.Format("The item {0} has no stock.", item.Id));
+            }
+
             if (basket.Items == null)
             {
                 basket.Items = new List<Item> {item};
@@ -69,6 +86,22 @@ namespace ShoppingCart.Library
         public void UpdateBasket(Basket basket)
         {
             Repository.UpdateBasket(basket);
+        }
+
+
+        public IList<Item> CheckOutBasket(Basket basket)
+        {
+            basket.FinishDate = DateTime.Now;
+
+            foreach (var item in basket.Items)
+            {
+                item.Stock = item.Stock - item.Quantity;
+                Repository.UpdateItem(item);
+            }
+
+            Repository.UpdateBasket(basket);
+
+            return basket.Items;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace ShoppingCart.ServiceLibrary
 
         public IList<Item> GetAllItems()
         {
-            IList<Item> listItems = null;
+            IList<Item> listItems;
 
             try
             {
@@ -47,7 +47,7 @@ namespace ShoppingCart.ServiceLibrary
 
         public Item GetItem(int itemToAdd)
         {
-            Item item = null;
+            Item item;
 
             try
             {
@@ -60,39 +60,6 @@ namespace ShoppingCart.ServiceLibrary
             }
 
             return item;
-        }
-
-        public Basket AddItemToBasket(string shopperName, int itemToAdd)
-        {
-            Basket basket = null;
-
-            try
-            {
-                var shopper = ShoppingCartDomain.GetShopper(shopperName);
-
-                if (shopper != null)
-                {
-                    basket = ShoppingCartDomain.GetLatestShopperBasketOrNew(shopper);
-                    var item = ShoppingCartDomain.GetItem(itemToAdd);
-
-                    if (item.Stock > 0)
-                    {
-                        item.Quantity = item.Quantity == null ? 1 : item.Quantity++;
-                        basket = ShoppingCartDomain.AddItem(basket, item);
-                    }
-                    else
-                    {
-                        throw new Exception(string.Format("The item {0} has no stock.", itemToAdd));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("AddItemToBasket : " + ex.InnerException);
-                throw ex;
-            }
-
-            return basket;
         }
 
         public Basket GetLatestBasket(string shopperName)
@@ -117,6 +84,30 @@ namespace ShoppingCart.ServiceLibrary
             return basket;
         }
 
+        public Basket AddItemToBasket(string shopperName, int itemToAdd)
+        {
+            Basket basket = null;
+
+            try
+            {
+                var shopper = ShoppingCartDomain.GetShopper(shopperName);
+
+                if (shopper != null)
+                {
+                    basket = ShoppingCartDomain.GetLatestShopperBasketOrNew(shopper);
+                    var item = ShoppingCartDomain.GetItem(itemToAdd);
+                        
+                    basket = ShoppingCartDomain.AddItem(basket, item, 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("AddItemToBasket : " + ex.InnerException);
+                throw ex;
+            }
+
+            return basket;
+        }
 
         public Basket AddItemsToBasket(string shopperName, Dictionary<int, int> itemsToAdd)
         {
@@ -138,13 +129,8 @@ namespace ShoppingCart.ServiceLibrary
 
                         if (item == null) item = ShoppingCartDomain.GetItem(itemToAdd.Key);
                         
-                        if (item != null && item.Stock > 0)
-                        {
-                            var newQuantity = (item.Quantity ?? 0) + itemToAdd.Value;
-                            item.Quantity = item.Stock > newQuantity ? newQuantity : item.Stock;
-                            //item.Stock = item.Stock > itemToAdd.Value ? item.Stock - itemToAdd.Value : 0;
-                            basket = ShoppingCartDomain.AddItem(basket, item);
-                        }
+                        if (item != null)
+                            basket = ShoppingCartDomain.AddItem(basket, item, itemToAdd.Value);
                     }
                 }
             }
@@ -157,5 +143,23 @@ namespace ShoppingCart.ServiceLibrary
             return basket;
         }
 
+
+
+        public IList<Item> CheckOutBasket(Basket basket)
+        {
+            IList<Item> items;
+
+            try
+            {
+                items = ShoppingCartDomain.CheckOutBasket(basket);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("CheckOutBasket : " + ex.InnerException);
+                throw ex;
+            }
+
+            return items;
+        }
     }
 }

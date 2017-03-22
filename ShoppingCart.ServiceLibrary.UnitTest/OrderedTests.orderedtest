@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<OrderedTest name="orderedtest1" storage="c:\users\fjma\documents\visual studio 2015\projects\shoppingcart\shoppingcart.servicelibrary.unittest\orderedtest1.orderedtest" id="d174ecf5-fbf4-49be-8b7f-acaadf3c0956" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestLinks>
+    <TestLink id="46b6f14d-7248-b875-e7db-40a90b69b54b" name="UserStory1" storage="bin\debug\shoppingcart.servicelibrary.unittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="c4b5e7ec-13c4-a262-d2da-1d461b227ffe" name="UserStory2" storage="bin\debug\shoppingcart.servicelibrary.unittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="4d00e547-a879-54c1-aefc-9996a320c7a8" name="UserStory3" storage="bin\debug\shoppingcart.servicelibrary.unittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="14c66415-5493-1e04-423e-424261a35535" name="UserStory4" storage="bin\debug\shoppingcart.servicelibrary.unittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestLinks>
+</OrderedTest>

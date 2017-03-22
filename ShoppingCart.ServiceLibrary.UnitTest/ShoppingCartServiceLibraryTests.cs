@@ -35,25 +35,22 @@ namespace ShoppingCart.ServiceLibrary.UnitTest
 
             Assert.AreEqual(items.Count, 5);
 
-            foreach (var item in items)
-            {
-                Console.WriteLine("Name: {0}\t Description: {1}\t Id: {2}\t Stock: {3}", item.Name, item.Description, item.Id, item.Stock);
-            }
-            
+            PrintItems(items);
         }
+
+        
 
         [TestMethod]
         public void UserStory2()
         {
             var service = Kernel.Get<IShoppingCartService>();
+            RepositoryMock.SetMockBasket(null);
 
             string shopperName = "Mika";
             int itemToAdd = 2;
 
             _basket = service.GetLatestBasket(shopperName);
             var item = service.GetItem(itemToAdd);
-
-            Assert.IsFalse(_basket.Items.Any(i => i.Id == itemToAdd));
 
             Console.WriteLine("Before adding an item");
             PrintBasket(shopperName, _basket);
@@ -84,8 +81,7 @@ namespace ShoppingCart.ServiceLibrary.UnitTest
 
             RepositoryMock.SetMockBasket(_basket);
 
-            if (_basket == null) 
-                _basket = service.GetLatestBasket(shopperName);
+            _basket = service.GetLatestBasket(shopperName);
             
             Console.WriteLine("Before adding a list of items");
             PrintBasket(shopperName, _basket);
@@ -105,6 +101,35 @@ namespace ShoppingCart.ServiceLibrary.UnitTest
             PrintBasket(shopperName, _basket);
         }
 
+        [TestMethod]
+        public void UserStory4()
+        {
+            var service = Kernel.Get<IShoppingCartService>();
+
+            string shopperName = "Mika";
+            RepositoryMock.SetMockBasket(_basket);
+
+            _basket = service.GetLatestBasket(shopperName);
+
+            Console.WriteLine("Before checking out");
+            PrintBasket(shopperName, _basket);
+
+            var itemsBought = service.CheckOutBasket(_basket);
+
+            Console.WriteLine("After checking out");
+            PrintItems(itemsBought);
+        }
+
+        #region privateMethods
+
+        private void PrintItems(IList<Item> items)
+        {
+            foreach (var item in items)
+            {
+                Console.WriteLine("Name: {0}\t Description: {1}\t Id: {2}\t Stock: {3}", item.Name, item.Description, item.Id, item.Stock);
+            }
+        }
+
         private void PrintBasket(string shopperName, Basket basket)
         {
             Console.WriteLine("Basket of user: {0}", shopperName);
@@ -114,5 +139,7 @@ namespace ShoppingCart.ServiceLibrary.UnitTest
                 Console.WriteLine("Name: {0}\t Description: {1}\t Id: {2}\t Quantity: {3}\t Stock: {4}", basketItem.Name, basketItem.Description, basketItem.Id, basketItem.Quantity, basketItem.Stock);
             }
         }
+
+        #endregion
     }
 }

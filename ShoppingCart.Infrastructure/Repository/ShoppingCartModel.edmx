@@ -12,8 +12,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" />
           <Property Name="ShopperId" Type="int" />
-          <Property Name="Finished" Type="bit" />
           <Property Name="FinishDate" Type="datetime" />
+          <Property Name="Cancelled" Type="bit" />
         </EntityType>
         <EntityType Name="BasketItems">
           <Key>
@@ -124,8 +124,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreationDate" Type="DateTime" Precision="3" />
           <Property Name="ShopperId" Type="Int32" />
-          <Property Name="Finished" Type="Boolean" />
           <Property Name="FinishDate" Type="DateTime" Precision="3" />
+          <Property Name="Cancelled" Type="Boolean" />
           <NavigationProperty Name="BasketItems" Relationship="ShoppingCartModel.FK_BasketItems_ToBasket" FromRole="Basket" ToRole="BasketItem" />
           <NavigationProperty Name="Shopper" Relationship="ShoppingCartModel.FK_Cart_ToShopper" FromRole="Basket" ToRole="Shopper" />
         </EntityType>
@@ -195,7 +195,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -204,8 +204,8 @@
           <EntitySetMapping Name="Baskets">
             <EntityTypeMapping TypeName="ShoppingCartModel.Basket">
               <MappingFragment StoreEntitySet="Basket">
+                <ScalarProperty Name="Cancelled" ColumnName="Cancelled" />
                 <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
-                <ScalarProperty Name="Finished" ColumnName="Finished" />
                 <ScalarProperty Name="ShopperId" ColumnName="ShopperId" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

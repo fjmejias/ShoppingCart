@@ -32,7 +32,7 @@ namespace ShoppingCart.Infrastructure
                 Id = dbBasket.Id,
                 CreationDate = dbBasket.CreationDate,
                 FinishDate = dbBasket.FinishDate,
-                Finished = dbBasket.Finished,
+                Cancelled = dbBasket.Cancelled,
                 ShopperId = dbBasket.ShopperId,
                 Shopper = Map(dbBasket.Shopper),
                 Items = items

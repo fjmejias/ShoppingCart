@@ -14,7 +14,8 @@ namespace ShoppingCart.Library
         Shopper GetShopper(string name);
         Item GetItem(int itemToAdd);
         Basket GetLatestShopperBasketOrNew(Shopper shopper);
-        Basket AddItem(Basket basket, Item item);
+        Basket AddItem(Basket basket, Item item, int quantity);
         void UpdateBasket(Basket basket);
+        IList<Item> CheckOutBasket(Basket basket);
     }
 }

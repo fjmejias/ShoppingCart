@@ -12,11 +12,11 @@ namespace ShoppingCart.Library.RepositoryContract
         IList<Item> GetAllItems();
         IList<Item> GetBasketItems(int basketId);
         Basket GetBasket(int basketId);
-        int CheckOutBasket(int basketId);
         Shopper GetShopper(string name);
         Basket GetLatestShopperBasket(int shopperId);
         Item GetItem(int id);
         Basket UpdateBasket(Basket basket);
         Basket GetNewBasket(int shopperId);
+        Item UpdateItem(Item item);
     }
 }

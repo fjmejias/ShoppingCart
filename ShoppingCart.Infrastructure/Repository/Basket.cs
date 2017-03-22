@@ -23,8 +23,8 @@ namespace ShoppingCart.Infrastructure.Repository
         public int Id { get; set; }
         public Nullable<System.DateTime> CreationDate { get; set; }
         public Nullable<int> ShopperId { get; set; }
-        public Nullable<bool> Finished { get; set; }
         public Nullable<System.DateTime> FinishDate { get; set; }
+        public Nullable<bool> Cancelled { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasketItem> BasketItems { get; set; }
